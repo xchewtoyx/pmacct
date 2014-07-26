@@ -29,7 +29,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* $Id: netflow9.c,v 1.39 2014/07/24 16:45:04 paolo Exp $ */
+/* $Id: netflow9.c,v 1.40 2014/07/26 10:27:57 paolo Exp $ */
 
 #define __NFPROBE_NETFLOW9_C
 
@@ -2014,7 +2014,7 @@ send_netflow_v9(struct FLOW **flows, int num_flows, int nfsock,
 			  send_options = TRUE;
 			  send_sampling_option = TRUE;
 			}
-			if (config.nfprobe_what_to_count & COUNT_CLASS) {
+			if (config.nfprobe_what_to_count & COUNT_CLASS && num_class) {
                           memcpy(packet + offset, &class_option_template, class_option_template.tot_len);
                           offset += class_option_template.tot_len;
                           flows++;
