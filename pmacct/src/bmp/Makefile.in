@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.1 2015/01/05 13:01:53 paolo Exp $
+# $Id: Makefile.in,v 1.2 2015/02/01 21:35:48 paolo Exp $
 
 prefix=@prefix@
 exec_prefix=@exec_prefix@
@@ -28,8 +28,8 @@ COMMON=
 
 all: $(TARGETS)
 
-libbmp.a: bmp.o $(COMMON)
-	ar rc $@ bmp.o $(COMMON)
+libbmp.a: bmp.o bmp_logdump.o $(COMMON)
+	ar rc $@ bmp.o bmp_logdump.o $(COMMON)
 	$(RANLIB) $@
 
 clean:
