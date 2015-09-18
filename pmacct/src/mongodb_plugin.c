@@ -786,9 +786,11 @@ void MongoDB_cache_purge(struct chained_cache *queue[], int index)
       if (batch_idx == config.mongo_insert_batch) {
         if (dyn_table) db_status = mongo_insert_batch(&db_conn, current_table, bson_batch, batch_idx, NULL, MONGO_CONTINUE_ON_ERROR);
         else db_status = mongo_insert_batch(&db_conn, config.sql_table, bson_batch, batch_idx, NULL, MONGO_CONTINUE_ON_ERROR);
-        if (db_status != MONGO_OK)
+        if (db_status != MONGO_OK) {
   	  Log(LOG_ERR, "ERROR ( %s/%s ): Unable to insert all elements in batch: try a smaller mongo_insert_batch value.\n", config.name, config.type);
-  
+          Log(LOG_ERR, "ERROR ( %s/%s ): Error: %s.\n", config.name, config.type, db_conn->lasterrstr);
+        }
+
         for (i = 0; i < batch_idx; i++) {
           bson_elem = (bson *) bson_batch[i];
           bson_destroy(bson_elem);
@@ -804,8 +806,10 @@ void MongoDB_cache_purge(struct chained_cache *queue[], int index)
   if (batch_idx) {
     if (dyn_table) db_status = mongo_insert_batch(&db_conn, current_table, bson_batch, batch_idx, NULL, MONGO_CONTINUE_ON_ERROR);
     else db_status = mongo_insert_batch(&db_conn, config.sql_table, bson_batch, batch_idx, NULL, MONGO_CONTINUE_ON_ERROR);
-    if (db_status != MONGO_OK) 
+    if (db_status != MONGO_OK) {
       Log(LOG_ERR, "ERROR ( %s/%s ): Unable to insert all elements in batch: try a smaller mongo_insert_batch value.\n", config.name, config.type);
+      Log(LOG_ERR, "ERROR ( %s/%s ): Error: %s.\n", config.name, config.type, db_conn->lasterrstr);
+    }
 
     for (i = 0; i < batch_idx; i++) {
       bson_elem = (bson *) bson_batch[i];
