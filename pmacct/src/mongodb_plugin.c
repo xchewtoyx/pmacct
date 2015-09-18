@@ -300,9 +300,9 @@ void MongoDB_cache_purge(struct chained_cache *queue[], int index)
   }
 
   if (config.sql_host)
-    db_status = mongo_connect(&db_conn, config.sql_host, 27017 /* default port */);
+    db_status = mongo_client(&db_conn, config.sql_host, 27017 /* default port */);
   else
-    db_status = mongo_connect(&db_conn, "127.0.0.1", 27017 /* default port */);
+    db_status = mongo_client(&db_conn, "127.0.0.1", 27017 /* default port */);
 
   if (db_status != MONGO_OK) {
     switch (db_conn.err) {
