@@ -135,6 +135,7 @@ void mongodb_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 
   mongo_init(&db_conn);
   mongo_set_op_timeout(&db_conn, 1000);
+  bson_set_oid_fuzz(&mongodb_oid_fuzz);
 
   /* plugin main loop */
   for(;;) {
@@ -893,4 +894,13 @@ void MongoDB_append_label(bson *bson_elem, char *name, struct pkt_vlen_hdr_primi
   vlen_prims_get(pvlen, wtc, &label_ptr);
   if (label_ptr) bson_append_string(bson_elem, name, label_ptr); 
   else bson_append_null(bson_elem, name);
+}
+
+int mongodb_oid_fuzz(void)
+{
+  struct timeval now;
+  gettimeofday(&now, NULL);
+  srand((int)now.tv_usec);
+
+  return rand();
 }

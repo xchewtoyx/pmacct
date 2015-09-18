@@ -20,7 +20,9 @@
 */
 
 /* includes */
+#include <stdlib.h>
 #include <sys/poll.h>
+#include <time.h>
 
 /* defines */
 #if (!defined MONGO_HAVE_STDINT)
@@ -43,6 +45,7 @@ EXT void MongoDB_cache_purge(struct chained_cache *[], int);
 EXT void MongoDB_create_indexes(mongo *, const char *);
 EXT int MongoDB_get_database(char *, int, char *);
 EXT void MongoDB_append_label(bson *, char *, struct pkt_vlen_hdr_primitives *, pm_cfgreg_t);
+EXT int mongodb_oid_fuzz(void);
 
 /* global vars */
 EXT void (*insert_func)(struct primitives_ptrs *, struct insert_data *); /* pointer to INSERT function */
